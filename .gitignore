@@ -1,3 +1,7 @@
 #Cosas del Codeblocks
 /bin
 /obj
+
+.tpFinalProgramacion.cbp
+.tpFinalProgramacion.layout
+.hello.exe
