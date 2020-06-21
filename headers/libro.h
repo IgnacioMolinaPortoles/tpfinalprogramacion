@@ -5,7 +5,7 @@
 struct _libro {
     int ISNB;
     char nombre[30];
-    char genero;
+    char genero[30];
     char autor[30];
     int cantidadDePaginas;
     int precio;
@@ -13,9 +13,13 @@ struct _libro {
     int borrado;
 };
 
-void reescribirLibro(char[] nombre);
+void menuGestorLibros();
+
+void reescribirLibro(char nombre[]);
 stLibro reescribirLibroAux(stLibro _libro);
+
 void mostrarLibros();
 void mostrarLibroAux(stLibro libro);
+
 void cargarLibros();
 void cargarLibrosAux(FILE *libros);
