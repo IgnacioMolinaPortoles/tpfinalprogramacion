@@ -1,6 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
+<<<<<<< HEAD
 #include "./Headers/libro.h"
+=======
+#include <string.h>
+#include "./Headers/libro.h"
+#include "./Headers/lector.h"
+>>>>>>> joaquin
 
 int main()
 {
@@ -32,7 +38,12 @@ int main()
             menuGestorLibros();
         break;
         case 2:
+<<<<<<< HEAD
 
+=======
+            system("cls");
+            menuGestorLectores();
+>>>>>>> joaquin
         break;
         default:
             printf("Opcion invalida");
