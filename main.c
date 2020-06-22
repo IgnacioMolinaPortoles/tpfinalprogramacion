@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "./Headers/libro.h"
+#include "./Headers/lector.h"
 
 int main()
 {
@@ -32,7 +34,8 @@ int main()
             menuGestorLibros();
         break;
         case 2:
-
+            system("cls");
+            menuGestorLectores();
         break;
         default:
             printf("Opcion invalida");
