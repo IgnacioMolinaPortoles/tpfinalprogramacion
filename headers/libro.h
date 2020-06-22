@@ -20,6 +20,7 @@ stLibro reescribirLibroAux(stLibro _libro);
 
 void mostrarLibros();
 void mostrarLibroAux(stLibro libro);
+void mostrarLibrosBorrados();
 
 void cargarLibros();
 void cargarLibrosAux(FILE *libros);
