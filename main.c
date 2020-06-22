@@ -34,12 +34,8 @@ int main()
             menuGestorLibros();
         break;
         case 2:
-<<<<<<< HEAD
-
-=======
             system("cls");
             menuGestorLectores();
->>>>>>> joaquin
         break;
         default:
             printf("Opcion invalida");
