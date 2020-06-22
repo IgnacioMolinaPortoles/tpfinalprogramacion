@@ -1,12 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
-<<<<<<< HEAD
 #include "./Headers/libro.h"
-=======
 #include <string.h>
-#include "./Headers/libro.h"
 #include "./Headers/lector.h"
->>>>>>> joaquin
 
 int main()
 {
