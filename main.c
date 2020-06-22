@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #include "./Headers/libro.h"
+#include <string.h>
 #include "./Headers/lector.h"
 
 int main()
