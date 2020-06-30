@@ -16,7 +16,7 @@ void menuGestorLibros(){
             printf("GESTOR DE LIBROS 1.0\n");
             printf("1-Agregar nuevo libro\n2-Borrar Libro\n3-Modificar Libro\n4-Consultar Libros\n5-Listar Libros\n6-Listar Libros Borrados\n");
             scanf("%d", &seleccion_libros);
-            if(seleccion_libros >= 1 && seleccion_libros < 6){
+            if(seleccion_libros >= 1 && seleccion_libros < 7){
                 seguir = 1;
             } else {
                 system("cls");
@@ -307,4 +307,3 @@ void cargarLibrosAux(FILE *libros){
         scanf("%d", &salir);
     }
 }
-

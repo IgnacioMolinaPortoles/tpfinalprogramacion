@@ -12,7 +12,18 @@ struct _lector {
 	int borrado;
 };
 
+
 void menuGestorLectores();
+
+void borrarLector(char nombre[]);
+
+void reescribirLector(char nombre[]);
+stLector reescribirLectorAux(stLector _lector);
+
+void consultarLectores(char nombre[]);
+void mostrarLectores();
+void mostrarLectorAux(stLector lector);
+void mostrarLectoresBorrados();
 
 void cargarLectores();
 void cargarLectoresAux(FILE *lectores);

@@ -15,9 +15,12 @@ struct _libro {
 
 void menuGestorLibros();
 
+void borrarLibro(char nombre[]);
+
 void reescribirLibro(char nombre[]);
 stLibro reescribirLibroAux(stLibro _libro);
 
+void consultarLibros(char nombre[]);
 void mostrarLibros();
 void mostrarLibroAux(stLibro libro);
 void mostrarLibrosBorrados();
