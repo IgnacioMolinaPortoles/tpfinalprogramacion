@@ -6,15 +6,17 @@ void menuGestorLibros(){
     int seguir = 0;
     int exit;
     char idLibro_Modificar[50];
+    char idLibro_Borrar[50];
+    char idLibro_Consulta[50];
 
 
-        do{
+    do{
 
         do{
             printf("GESTOR DE LIBROS 1.0\n");
-            printf("1-Agregar nuevo libro\n2-Borrar Libro\n3-Modificar Libro\n4-Consultar Libros\n5-Listar Libros\n");
+            printf("1-Agregar nuevo libro\n2-Borrar Libro\n3-Modificar Libro\n4-Consultar Libros\n5-Listar Libros\n6-Listar Libros Borrados\n");
             scanf("%d", &seleccion_libros);
-            if(seleccion_libros >= 1 && seleccion_libros < 6){
+            if(seleccion_libros >= 1 && seleccion_libros < 7){
                 seguir = 1;
             } else {
                 system("cls");
@@ -22,7 +24,7 @@ void menuGestorLibros(){
             }
 
         }while(seguir != 1);
-
+        system("cls");
         seguir = 0;
 
         switch(seleccion_libros){
@@ -31,19 +33,31 @@ void menuGestorLibros(){
             cargarLibros();
         break;
         case 2:
-
+            printf("Ingrese el nombre del libro que desea borrar: ");
+            fflush(stdin);
+            fgets(idLibro_Borrar, 50, stdin);
+            idLibro_Borrar[strlen (idLibro_Borrar) - 1] = '\0';
+            borrarLibro(idLibro_Borrar);
         break;
         case 3:
-            printf("Ingrese el nombre o ISBN del libro que desea modificar: ");
+            printf("Ingrese el nombre del libro que desea modificar: ");
             fflush(stdin);
             fgets(idLibro_Modificar, 50, stdin);
+            idLibro_Modificar[strlen (idLibro_Modificar) - 1] = '\0';
             reescribirLibro(idLibro_Modificar);
         break;
         case 4:
-
+            printf("Ingrese el nombre del libro que desea consultar: ");
+            fflush(stdin);
+            fgets(idLibro_Consulta, 50, stdin);
+            idLibro_Consulta[strlen (idLibro_Consulta) - 1] = '\0';
+            consultarLibros(idLibro_Consulta);
         break;
         case 5:
            mostrarLibros();
+        break;
+        case 6:
+            mostrarLibrosBorrados();
         break;
         default:
             printf("Opcion invalida");
@@ -52,7 +66,7 @@ void menuGestorLibros(){
 
         do{
             system("cls");
-            printf("Desea volver al menu principal? 1-si 2-no:");
+            printf("Desea salir al inicio? 1-si 2-no:");
             scanf("%d", &exit);
             if(exit == 1 || exit == 2){
                 seguir = 1;
@@ -64,27 +78,100 @@ void menuGestorLibros(){
     }while(exit != 1);
 
 }
-
-void reescribirLibro(char nombre[]){
-
-    FILE * libros = fopen(file_libros, "rb+");
-    stLibro libro, libroTemp;
-    long size = 0;
+void consultarLibros(char nombre[]){
+FILE * libros = fopen(file_libros, "rb+");
+    stLibro libroTemp;
+    int existe = 0;
 
     if(libros != NULL){
 
         while (fread(&libroTemp,sizeof(stLibro),1,libros) > 0)
         {
-            printf("%s y %s", libroTemp, nombre);
-            if(strcmp(libroTemp.nombre, nombre) == 0){mostrarLibroAux(libroTemp);
-                /*libro = reescribirLibroAux(libro);
-                size=ftell(libros);
-
-                fseek(libros, size, SEEK_SET);
-                fwrite(&libro, sizeof(stLibro), 1, libros);*/
+            if(strcmp(libroTemp.nombre, nombre) == 0){
+               existe = 1;
             }
         }
 
+        if(existe == 0){
+            printf("El libro '%s' no existe\n", nombre);
+        } else {
+            if(libroTemp.borrado == 1){
+                printf("El libro '%s' existe\n", nombre);
+            } else {
+                printf("El libro '%s' existe pero esta deshabilitado\n", nombre);
+            }
+        }
+
+    }
+    system("pause");
+    fclose(libros);
+}
+void mostrarLibrosBorrados(){
+    stLibro libroTemp;
+    FILE * libros = fopen(file_libros, "rb");
+
+    if(libros != NULL){
+
+        while (fread(&libroTemp,sizeof(stLibro),1,libros) > 0)
+        {
+            if(libroTemp.borrado == 1){
+                mostrarLibroAux(libroTemp);
+            }
+        }
+    } else {
+        printf("Archivo no encontrado");
+    }
+    system("pause");
+    fclose(libros);
+}
+void borrarLibro(char nombre[]){
+
+    FILE * libros = fopen(file_libros, "rb+");
+    stLibro libroTemp;
+    int ubicacion = 0;
+
+    if(libros != NULL){
+
+        while (fread(&libroTemp,sizeof(stLibro),1,libros) > 0)
+        {
+            if(strcmp(libroTemp.nombre, nombre) != 0){
+                ubicacion++;
+            } else {
+                break;
+            }
+        }
+
+        libroTemp.borrado = 1;
+
+        fseek(libros, sizeof(stLibro)*(ubicacion), SEEK_SET);
+        fwrite(&libroTemp, sizeof(stLibro), 1, libros);
+
+    }
+    system("pause");
+    fclose(libros);
+
+}
+void reescribirLibro(char nombre[]){
+
+    FILE * libros = fopen(file_libros, "rb+");
+    stLibro libroTemp;
+    int ubicacion = 0;
+
+    if(libros != NULL){
+
+        while (fread(&libroTemp,sizeof(stLibro),1,libros) > 0)
+        {
+            if(strcmp(libroTemp.nombre, nombre) != 0){
+                ubicacion++;
+            } else {
+                break;
+            }
+        }
+        printf("Ubicacion: %d\n", ubicacion);
+        libroTemp = reescribirLibroAux(libroTemp);
+
+        fseek(libros, sizeof(stLibro)*(ubicacion), SEEK_SET);
+        fwrite(&libroTemp, sizeof(stLibro), 1, libros);
 
     }
     system("pause");
@@ -158,7 +245,7 @@ void mostrarLibros() {
     } else {
         printf("Archivo no encontrado");
     }
-
+    system("pause");
     fclose(libros);
 }
 void mostrarLibroAux(stLibro libro){
@@ -189,8 +276,8 @@ void cargarLibros(){
 
 }
 void cargarLibrosAux(FILE *libros){
-    int salir = 0;
-    while(salir != 1){
+    int salir = 1;
+    while(salir == 1){
         stLibro libro;
 
         libro.ISNB = salir+1;
@@ -220,4 +307,3 @@ void cargarLibrosAux(FILE *libros){
         scanf("%d", &salir);
     }
 }
-
