@@ -249,13 +249,13 @@ void mostrarLibros() {
     fclose(libros);
 }
 void mostrarLibroAux(stLibro libro){
-    printf("ISNB: %s\n", libro.nombre);
+    printf("ISNB: %d\n", libro.ISNB);
     printf("Nombre: %s\n", libro.nombre);
     printf("Genero: %s\n", libro.genero);
     printf("Autor: %s\n", libro.autor);
     printf("Cantidad de paginas: %d\n", libro.cantidadDePaginas);
     printf("Precio: %d\n", libro.precio);
-    printf("Calificacion: %d\n", libro.calificacion);
+    printf("Calificacion: %f\n", libro.calificacion);
     printf("-------------\n");
 }
 void cargarLibros(){
@@ -280,12 +280,10 @@ void cargarLibrosAux(FILE *libros){
     while(salir == 1){
         stLibro libro;
 
-        libro.ISNB = salir+1;
-        libro.cantidadDePaginas = 10+salir+1;
-        libro.precio = 100+salir+1;
-        libro.calificacion = 0.0;
         libro.borrado = 0;
 
+        printf("Ingrese ISNB del libro: ");
+        scanf("%d",&libro.ISNB);
         printf("Ingrese nombre del libro: ");
         fflush(stdin);
         fgets(libro.nombre, 30, stdin);
@@ -293,6 +291,12 @@ void cargarLibrosAux(FILE *libros){
         fgets(libro.genero, 30, stdin);
         printf("Ingrese autor del libro: ");
         fgets(libro.autor, 30, stdin);
+        printf("Ingrese la cantidad de paginas: ");
+        scanf("%d",&libro.cantidadDePaginas);
+        printf("Ingrese su precio: ");
+        scanf("%d",&libro.precio);
+        printf("Ingrese su calificacion: ");
+        scanf("%f",&libro.calificacion);
 
         libro.nombre[strlen (libro.nombre) - 1] = '\0';
         libro.genero[strlen (libro.genero) - 1] = '\0';

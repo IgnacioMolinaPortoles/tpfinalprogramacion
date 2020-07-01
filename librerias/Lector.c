@@ -276,18 +276,21 @@ void cargarLectoresAux(FILE *lectores){
     while(salir == 1){
         stLector lector;
 
-        lector.ID = salir+1;
-        lector.edad = 10+salir+1;
-        lector.librosReseniados = 3+salir+1;
         lector.borrado = 0;
 
+        printf("Ingrese ID del lector: ");
+        scanf("%d",&lector.ID);
         printf("Ingrese nombre y apellido del lector: ");
         fflush(stdin);
         fgets(lector.nombre, 40, stdin);
+        printf("Ingrese edad del lector: ");
+        scanf("%d",&lector.edad);
         printf("Ingrese genero del lector: ");
         fgets(lector.genero, 10, stdin);
         printf("Ingrese ciudad del lector: ");
         fgets(lector.ciudad, 30, stdin);
+        printf("Ingrese cantidad de libros reseniados por el lector: ");
+        scanf("%d",&lector.librosReseniados);
 
         lector.nombre[strlen (lector.nombre) - 1] = '\0';
         lector.genero[strlen (lector.genero) - 1] = '\0';
