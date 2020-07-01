@@ -14,9 +14,9 @@ void menuGestorLibros(){
 
         do{
             printf("GESTOR DE LIBROS 1.0\n");
-            printf("1-Agregar nuevo libro\n2-Borrar Libro\n3-Modificar Libro\n4-Consultar Libros\n5-Listar Libros\n6-Listar Libros Borrados\n");
+            printf("1-Agregar nuevo libro\n2-Borrar Libro\n3-Modificar Libro\n4-Consultar Libros\n5-Listar Libros\n6-Listar Libros Borrados\n7-Listar Libros por Calificacion\n");
             scanf("%d", &seleccion_libros);
-            if(seleccion_libros >= 1 && seleccion_libros < 7){
+            if(seleccion_libros >= 1 && seleccion_libros < 8){
                 seguir = 1;
             } else {
                 system("cls");
@@ -58,6 +58,9 @@ void menuGestorLibros(){
         break;
         case 6:
             mostrarLibrosBorrados();
+        break;
+        case 7:
+            mostrarLibrosPorCalificacion();
         break;
         default:
             printf("Opcion invalida");
@@ -229,6 +232,78 @@ stLibro reescribirLibroAux(stLibro _libro){
 
     return _libro;
 }
+void mostrarLibrosPorCalificacion() {
+
+    int orden,dim;
+
+    stLibro libroTemp;
+
+    stLibro LibrosReseniados[99];
+    int i = 0;
+
+    FILE * libros = fopen(file_libros, "rb");
+
+    if(libros != NULL){
+
+        while (fread(&libroTemp,sizeof(stLibro),1,libros) > 0)
+        {
+            if(libroTemp.borrado!=1){
+                LibrosReseniados[i] = libroTemp;
+                i++;
+            }
+        }
+    } else {
+        printf("Archivo no encontrado");
+    }
+    fclose(libros);
+
+    printf("Como desea ordenarlos?:1-Menor a Mayor,2-Mayor a Menor\n");
+    scanf("%d",&orden);
+    BubbleSort(LibrosReseniados,i,orden);
+
+    printf("Hay %d libros\n",i);
+
+    printf("Cuantos desea ver en el ordenamiento?:0-Todos\n");
+    scanf("%d",&dim);
+    if(dim>i){
+        printf("La cantidad ingresada es superior, se mostraran todos");
+        mostrarArrayLibros(LibrosReseniados,i);
+        system("pause");
+    }else{
+        if(dim==0){
+           mostrarArrayLibros(LibrosReseniados,i);
+           system("pause");
+        }else{
+            mostrarArrayLibros(LibrosReseniados,dim);
+            system("pause");
+        }
+    }
+
+}
+void BubbleSort(stLibro LibrosReseniados[],int i,int orden){
+
+
+stLibro aux;
+
+    for(int j=0; j < i-1; j++){//Repito el proceso hasta que no haga falta
+        for(int h=0; h < i-j-1; h++){//Se repite por el tamaño del array-1
+
+            if(orden!=2){//Ordena de menor a mayor
+                if(LibrosReseniados[h].calificacion>LibrosReseniados[h+1].calificacion){//Compara sus valores
+                    aux=LibrosReseniados[h];//Guardo los datos en una variable auxiliar
+                    LibrosReseniados[h]=LibrosReseniados[h+1];//Reemplazo su valor por el otro
+                    LibrosReseniados[h+1]=aux;//Reemplazo el valor por la auxiliar
+                }
+            }else{//Ordena de mayor a menor
+                if(LibrosReseniados[h].calificacion<LibrosReseniados[h+1].calificacion){//Compara sus valores
+                    aux=LibrosReseniados[h];//Guardo los datos en una variable auxiliar
+                    LibrosReseniados[h]=LibrosReseniados[h+1];//Reemplazo su valor por el otro
+                    LibrosReseniados[h+1]=aux;//Reemplazo el valor por la auxiliar
+                }
+            }
+        }
+    }
+}
 void mostrarLibros() {
 
     stLibro libroTemp;
@@ -257,6 +332,11 @@ void mostrarLibroAux(stLibro libro){
     printf("Precio: %d\n", libro.precio);
     printf("Calificacion: %f\n", libro.calificacion);
     printf("-------------\n");
+}
+void mostrarArrayLibros(stLibro LibrosReseniados[],int dim){
+    for(int i=0; i<dim; i++){
+        mostrarLibroAux(LibrosReseniados[i]);
+    }
 }
 void cargarLibros(){
 

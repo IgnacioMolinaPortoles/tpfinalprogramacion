@@ -1,6 +1,7 @@
 #include <stdio.h>
 #define file_lectores "lectores.dat"
 #define stLector struct _lector
+#define stLibroReseniado struct _libroReseniado
 
 struct _lector {
 	int ID;
@@ -8,8 +9,13 @@ struct _lector {
 	int edad;
 	char genero[10];
 	char ciudad[30];
-	int librosReseniados;
+	stLibroReseniado librosReseniados[20];
 	int borrado;
+};
+
+struct _libroReseniado{
+    int ISNB;
+    char nombre[30];
 };
 
 

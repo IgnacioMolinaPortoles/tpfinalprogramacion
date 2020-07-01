@@ -289,8 +289,9 @@ void cargarLectoresAux(FILE *lectores){
         fgets(lector.genero, 10, stdin);
         printf("Ingrese ciudad del lector: ");
         fgets(lector.ciudad, 30, stdin);
-        printf("Ingrese cantidad de libros reseniados por el lector: ");
-        scanf("%d",&lector.librosReseniados);
+
+        //printf("Ingrese cantidad de libros reseniados por el lector: ");
+        //scanf("%d",&lector.librosReseniados);
 
         lector.nombre[strlen (lector.nombre) - 1] = '\0';
         lector.genero[strlen (lector.genero) - 1] = '\0';
@@ -304,4 +305,54 @@ void cargarLectoresAux(FILE *lectores){
         printf("Desea ingresar otro lector (1-Si 2-No)?");
         scanf("%d", &salir);
     }
+}
+void aniadirRecomendaciones(char nombre[]){
+
+    FILE * lectores = fopen(file_lectores, "rb+");
+    stLector lectorTemp;
+    int ubicacion = 0;
+
+    if(lectores != NULL){
+
+        while (fread(&lectorTemp,sizeof(stLector),1,lectores) > 0)
+        {
+            if(strcmp(lectorTemp.nombre, nombre) != 0){
+                ubicacion++;
+            } else {
+                break;
+            }
+        }
+        printf("Ubicacion: %d\n", ubicacion);
+        lectorTemp = aniadirRecomendacionesAux(lectorTemp);
+
+        fseek(lectores, sizeof(stLector)*(ubicacion), SEEK_SET);
+        fwrite(&lectorTemp, sizeof(stLector), 1, lectores);
+
+    }
+    system("pause");
+    fclose(lectores);
+
+}
+stLector aniadirRecomendacionesAux(stLector _lector){
+
+    stLector lectorAux;
+
+    int op=0;
+    int i=0;
+
+    while(op!=1){
+
+        printf("Ingrese ISNB : ");
+        scanf("%d", &_lector.librosReseniados[i].ISNB);
+
+        printf("Ingrese su nombre: ");
+        fgets(_lector.librosReseniados[i].nombre,20,stdin);
+
+        printf("Desea seguir?: 1-No, 0-Si");
+        scanf("%d",&op);
+        i++;
+
+    }
+
+    return _lector;
 }
