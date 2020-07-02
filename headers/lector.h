@@ -3,6 +3,11 @@
 #define stLector struct _lector
 #define stLibroReseniado struct _libroReseniado
 
+struct _libroReseniado{
+    int ISNB;
+    char nombre[30];
+};
+
 struct _lector {
 	int ID;
 	char nombre[40];
@@ -12,12 +17,6 @@ struct _lector {
 	stLibroReseniado librosReseniados[20];
 	int borrado;
 };
-
-struct _libroReseniado{
-    int ISNB;
-    char nombre[30];
-};
-
 
 void menuGestorLectores();
 

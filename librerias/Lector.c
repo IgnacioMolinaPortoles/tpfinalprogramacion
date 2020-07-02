@@ -218,12 +218,6 @@ stLector reescribirLectorAux(stLector _lector){
     if (result_ciudad == 1)
         strcpy(_lector.ciudad,lectorAux.ciudad);
 
-    printf("Nueva cantidad de librosReseniados (0 para omitir): ");
-    scanf("%d", &lectorAux.librosReseniados);
-
-    if (lectorAux.librosReseniados != 0)
-        _lector.librosReseniados = lectorAux.librosReseniados;
-
     return _lector;
 }
 void mostrarLectores(){
@@ -323,7 +317,23 @@ void aniadirRecomendaciones(char nombre[]){
             }
         }
         printf("Ubicacion: %d\n", ubicacion);
-        lectorTemp = aniadirRecomendacionesAux(lectorTemp);
+
+        int op=0;
+        int i=0;
+
+        while(op!=1){
+
+            printf("Ingrese ISNB : ");
+            scanf("%d", lectorTemp.librosReseniados[i].ISNB);
+
+            printf("Ingrese su nombre: ");
+            fgets(lectorTemp.librosReseniados[i].nombre,20,stdin);
+
+            printf("Desea seguir?: 1-No, 0-Si");
+            scanf("%d",&op);
+            i++;
+
+        }
 
         fseek(lectores, sizeof(stLector)*(ubicacion), SEEK_SET);
         fwrite(&lectorTemp, sizeof(stLector), 1, lectores);
@@ -333,26 +343,4 @@ void aniadirRecomendaciones(char nombre[]){
     fclose(lectores);
 
 }
-stLector aniadirRecomendacionesAux(stLector _lector){
 
-    stLector lectorAux;
-
-    int op=0;
-    int i=0;
-
-    while(op!=1){
-
-        printf("Ingrese ISNB : ");
-        scanf("%d", &_lector.librosReseniados[i].ISNB);
-
-        printf("Ingrese su nombre: ");
-        fgets(_lector.librosReseniados[i].nombre,20,stdin);
-
-        printf("Desea seguir?: 1-No, 0-Si");
-        scanf("%d",&op);
-        i++;
-
-    }
-
-    return _lector;
-}
