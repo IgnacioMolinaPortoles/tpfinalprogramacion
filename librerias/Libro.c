@@ -1,4 +1,5 @@
 #include "../Headers/libro.h"
+#include <time.h>
 
 void menuGestorLibros(){
 
@@ -357,13 +358,45 @@ void cargarLibros(){
 }
 void cargarLibrosAux(FILE *libros){
     int salir = 1;
+    FILE * _libros = fopen(file_libros, "rb+");
+    stLibro libroTemp;
+    int ISNBarr[99];
+    int j = 0;
+
+    if(_libros != NULL){
+
+        while (fread(&libroTemp,sizeof(stLibro),1,_libros) > 0)
+        {
+            ISNBarr[j] = libroTemp.ISNB;
+            j++;
+        }
+    }
+
+    fclose(_libros);
+
+
     while(salir == 1){
         stLibro libro;
+        int isnbTemp;
+        int libroExiste = 0;
 
         libro.borrado = 0;
 
         printf("Ingrese ISNB del libro: ");
-        scanf("%d",&libro.ISNB);
+        scanf("%d",&isnbTemp);
+        for(int i = 0; i < j;i++){
+            if(ISNBarr[i] == isnbTemp){
+                libroExiste = 1;
+            }
+        }
+        if(libroExiste == 0){
+        libro.ISNB = isnbTemp;
+        }else {
+            srand(time(NULL));
+            libro.ISNB = rand();
+            printf("El id ya existe, se le asignara %d\n", libro.ISNB);
+            }
+
         printf("Ingrese nombre del libro: ");
         fflush(stdin);
         fgets(libro.nombre, 30, stdin);

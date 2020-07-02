@@ -14,6 +14,7 @@ struct _lector {
 	int edad;
 	char genero[10];
 	char ciudad[30];
+	int cantLibrosReseniados;
 	stLibroReseniado librosReseniados[20];
 	int borrado;
 };

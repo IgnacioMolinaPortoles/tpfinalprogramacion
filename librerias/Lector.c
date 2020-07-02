@@ -8,15 +8,16 @@ void menuGestorLectores(){
     char idLector_Modificar[50];
     char idLector_Borrar[50];
     char idLector_Consulta[50];
+    char idLector_Recomendacion[50];
 
 
         do{
 
         do{
             printf("GESTOR DE LECTORES 1.0\n");
-            printf("1-Agregar nuevo Lector\n2-Borrar Lector\n3-Modificar Lector\n4-Consultar Lectores\n5-Listar Lectores\n6-Listar Lectores Borrados\n");
+            printf("1-Agregar nuevo Lector\n2-Borrar Lector\n3-Modificar Lector\n4-Consultar Lectores\n5-Listar Lectores\n6-Listar Lectores Borrados\n7-Aniadir recomendacion\n");
             scanf("%d", &seleccion_lectores);
-            if(seleccion_lectores >= 1 && seleccion_lectores < 7){
+            if(seleccion_lectores >= 1 && seleccion_lectores < 8){
                 seguir = 1;
             } else {
                 system("cls");
@@ -61,6 +62,13 @@ void menuGestorLectores(){
         break;
         case 6:
             mostrarLectoresBorrados();
+        break;
+        case 7:
+            printf("Ingrese el nombre del lector que desea aniadirle recomendaciones: ");
+            fflush(stdin);
+            fgets(idLector_Recomendacion, 50, stdin);
+            idLector_Recomendacion[strlen (idLector_Recomendacion) - 1] = '\0';
+            aniadirRecomendaciones(idLector_Recomendacion);
         break;
         default:
             printf("Opcion invalida");
@@ -245,8 +253,18 @@ void mostrarLectorAux(stLector lector){
     printf("Edad: %d\n", lector.edad);
     printf("Genero: %s\n", lector.genero);
     printf("Ciudad: %s\n", lector.ciudad);
-    printf("Libros Reseniados: %d\n", lector.librosReseniados);
-    printf("-------------\n");
+
+    if(lector.cantLibrosReseniados==0){
+        printf("No tiene libros reseniados ");
+    }else{
+        printf("Libros reseniados: ");
+        for(int i=0; i<lector.cantLibrosReseniados; i++){
+            printf("%s, ",lector.librosReseniados[i].nombre);
+        }
+    printf("\nCantidad de Libros Reseniados: %d\n", lector.cantLibrosReseniados);
+    }
+
+    printf("\n-------------\n");
 }
 void cargarLectores(){
 
@@ -270,6 +288,7 @@ void cargarLectoresAux(FILE *lectores){
     while(salir == 1){
         stLector lector;
 
+        lector.cantLibrosReseniados = 0;
         lector.borrado = 0;
 
         printf("Ingrese ID del lector: ");
@@ -280,6 +299,7 @@ void cargarLectoresAux(FILE *lectores){
         printf("Ingrese edad del lector: ");
         scanf("%d",&lector.edad);
         printf("Ingrese genero del lector: ");
+        fflush(stdin);
         fgets(lector.genero, 10, stdin);
         printf("Ingrese ciudad del lector: ");
         fgets(lector.ciudad, 30, stdin);
@@ -316,25 +336,39 @@ void aniadirRecomendaciones(char nombre[]){
                 break;
             }
         }
-        printf("Ubicacion: %d\n", ubicacion);
 
         int op=0;
-        int i=0;
+        int i=lectorTemp.cantLibrosReseniados;int idLibroTemp;
 
         while(op!=1){
+            int existe = 0;
 
             printf("Ingrese ISNB : ");
-            scanf("%d", lectorTemp.librosReseniados[i].ISNB);
+            scanf("%d",&idLibroTemp);
 
-            printf("Ingrese su nombre: ");
-            fgets(lectorTemp.librosReseniados[i].nombre,20,stdin);
+            for(int j = 0;j<lectorTemp.cantLibrosReseniados;j++){
+                if(idLibroTemp == lectorTemp.librosReseniados[j].ISNB){
+                    existe = 1;
+                }
+            }
+
+            if(existe == 0){
+                lectorTemp.librosReseniados[i].ISNB = idLibroTemp;
+                fflush(stdin);
+                printf("Ingrese su nombre: ");
+                fgets(lectorTemp.librosReseniados[i].nombre,20,stdin);
+                i++;
+            } else {
+                printf("Ese libro ya esta reseniado\n");
+            }
 
             printf("Desea seguir?: 1-No, 0-Si");
             scanf("%d",&op);
-            i++;
 
         }
 
+
+        lectorTemp.cantLibrosReseniados=i;
         fseek(lectores, sizeof(stLector)*(ubicacion), SEEK_SET);
         fwrite(&lectorTemp, sizeof(stLector), 1, lectores);
 
