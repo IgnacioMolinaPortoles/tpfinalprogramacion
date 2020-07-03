@@ -47,9 +47,12 @@ int main()
             scanf("%d", &exit);
             if(exit == 1 || exit == 2){
                 seguir = 1;
-                printf("Cerrando...");
             } else {
                 printf("Opcion invalida\n");
+            }
+            if(exit == 1){
+                printf("Cerrando...\n");
+                system("pause");
             }
         } while(seguir != 1);
 
